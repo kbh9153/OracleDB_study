@@ -76,7 +76,7 @@ SELECT hiredate, LAST_DAY(hiredate) FROM EMPLOYEE;
 -- 형 변환 함수 ** 중요 **
 
 /*
-	TO_CHAR : 날짜형 또는 숫자형을 문자형으로 변환하는 함
+	TO_CHAR : 날짜형 또는 숫자형을 문자형으로 변환하는 함수
 	TO_DATE : 문자형을 날짜형으로 변환하는 함수
 	TO_NUMBER : 문자형을 숫자형으로 변환하는 함수
 */
@@ -171,6 +171,7 @@ SELECT ename, salary, commission, COALESCE (commission, salary, 0) FROM EMPLOYEE
 
 
 -- decode 함수 : java의 switch case 문과 동일한 구문
+	-- => 처리되는 결과는 모두 타입이 동일해야함
 
 /*
  	DECODE (표현식, 조건1, 결과1,
@@ -199,6 +200,7 @@ FROM EMPLOYEE ORDER BY dno ASC, SALARY ASC;
 
 
 -- case : java의 if ~ else if, else if ~ 와 동일한 구문
+	-- => 처리되는 결과는 모두 타입이 동일해야함
 
 /*
  	case 표현식 WHEN 조건1 THEN 결과1

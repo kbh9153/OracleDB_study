@@ -1,15 +1,15 @@
--- ´Ù¾çÇÑ ÇÔ¼ö »ç¿ëÇÏ±â
+-- ë‹¤ì–‘í•œ í•¨ìˆ˜ ì‚¬ìš©í•˜ê¸°
 
 /*
-    1. ¹®ÀÚ¸¦ Ã³¸®ÇÏ´Â ÇÔ¼ö
-        - UPPER : ´ë¹®ÀÚ·Î º¯È¯
-        - LOWER : ¼Ò¹®ÀÚ·Î º¯È¯
-        - INITCAP : Ã¹ÀÚ´Â ´ë¹®ÀÚ·Î ³ª¸ÓÁö´Â ¼Ò¹®ÀÚ·Î º¯È¯
+    1. ë¬¸ìë¥¼ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
+        - UPPER : ëŒ€ë¬¸ìë¡œ ë³€í™˜
+        - LOWER : ì†Œë¬¸ìë¡œ ë³€í™˜
+        - INITCAP : ì²«ìëŠ” ëŒ€ë¬¸ìë¡œ ë‚˜ë¨¸ì§€ëŠ” ì†Œë¬¸ìë¡œ ë³€í™˜
         
-        dual Å×ÀÌºí : ÇÏ³ªÀÇ °á°ú¸¦ Ãâ·ÂÇÏµµ·Ï ÇÏ´Â Å×ÀÌºí (°¡»ó Å×ÀÌºí)
+        dual í…Œì´ë¸” : í•˜ë‚˜ì˜ ê²°ê³¼ë¥¼ ì¶œë ¥í•˜ë„ë¡ í•˜ëŠ” í…Œì´ë¸” (ê°€ìƒ í…Œì´ë¸”)
 */
 
-select '¾È³çÇÏ¼¼¿ä' as ÀÎ»ç from dual;
+select 'ì•ˆë…•í•˜ì„¸ìš”' as ì¸ì‚¬ from dual;
 
 select 'Oracle mania', upper('Oracle mania'), lower('Oracle mania'), initcap('Oracle mania')
 from dual;
@@ -17,79 +17,79 @@ from dual;
 select * from employees;
 select first_name, upper(first_name), initcap(first_name), lower(first_name) from employees;
 
-select * from employees where first_name = 'amit';  -- first_nameÀÇ °ªÀÌ Amit. A°¡ ´ë¹®ÀÚÀÌ±â ¶§¹®¿¡ °Ë»öÀÌ ¾ÈµÊ
-select * from employees where first_name = 'Amit';  -- °ªÀÌ ´ë¼Ò¹®ÀÚÀÇ °æ¿ì °Ë»öÇÒ ¶§µµ ´ë¼Ò¹®ÀÚ¸¦ ÀÏÄ¡½ÃÄÑÁà¾ß °Ë»öÀÌ °¡´É => ºÒÆí
-select * from employees where lower(first_name) = 'amit';   -- lower() ÇÔ¼ö¸¦ »ç¿ëÇÏ¿© ¼Ò¹®ÀÚ·Î °Ë»öµÇµµ·Ï Ã³¸®
+select * from employees where first_name = 'amit';  -- first_nameì˜ ê°’ì´ Amit. Aê°€ ëŒ€ë¬¸ìì´ê¸° ë•Œë¬¸ì— ê²€ìƒ‰ì´ ì•ˆë¨
+select * from employees where first_name = 'Amit';  -- ê°’ì´ ëŒ€ì†Œë¬¸ìì˜ ê²½ìš° ê²€ìƒ‰í•  ë•Œë„ ëŒ€ì†Œë¬¸ìë¥¼ ì¼ì¹˜ì‹œì¼œì¤˜ì•¼ ê²€ìƒ‰ì´ ê°€ëŠ¥ => ë¶ˆí¸
+select * from employees where lower(first_name) = 'amit';   -- lower() í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ ì†Œë¬¸ìë¡œ ê²€ìƒ‰ë˜ë„ë¡ ì²˜ë¦¬
 
--- ¹®ÀÚ ±æÀÌ¸¦ Ãâ·ÂÇÏ´Â ÇÔ¼ö
-    -- 1. length : ¹®ÀÚÀÇ ±æÀÌ¸¦ ¹İÈ¯, ¿µ¹®ÀÌ³ª ÇÑ±Û °ü°è¾øÀÌ ±ÛÀÚ ¼ö¸¦ ¸®ÅÏ
-    -- 2. lengthb : ¹®ÀÚÀÇ ±æÀÌ¸¦ ¹İÈ¯, ¿µ¹®Àº 1byte ¹İÈ¯, ÇÑ±Û 3byte·Î ¹İÈ¯
+-- ë¬¸ì ê¸¸ì´ë¥¼ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
+    -- 1. length : ë¬¸ìì˜ ê¸¸ì´ë¥¼ ë°˜í™˜, ì˜ë¬¸ì´ë‚˜ í•œê¸€ ê´€ê³„ì—†ì´ ê¸€ì ìˆ˜ë¥¼ ë¦¬í„´
+    -- 2. lengthb : ë¬¸ìì˜ ê¸¸ì´ë¥¼ ë°˜í™˜, ì˜ë¬¸ì€ 1byte ë°˜í™˜, í•œê¸€ 3byteë¡œ ë°˜í™˜
     
-select length('Oracle mania'), length('¿À¶óÅ¬ ¸Å´Ï¾Æ') from dual;
-select lengthb('Oracle mania'), lengthb('¿À¶óÅ¬ ¸Å´Ï¾Æ') from dual;
+select length('Oracle mania'), length('ì˜¤ë¼í´ ë§¤ë‹ˆì•„') from dual;
+select lengthb('Oracle mania'), lengthb('ì˜¤ë¼í´ ë§¤ë‹ˆì•„') from dual;
 
 select * from employees;
 select length(first_name), job_id, length(job_id) from employees;
 
--- ¹®ÀÚ Á¶ÀÛ ÇÔ¼ö
-    -- concat : ¹®ÀÚ¿Í ¹®ÀÚ¸¦ ¿¬°áÇØ¼­ Ãâ·Â
-    -- substr : ¹®ÀÚ¸¦ Æ¯Á¤ À§Ä¡¿¡¼­ Àß¶ó¿À´Â ÇÔ¼ö (¿µ¹®, ÇÑ±Û, ¸ğµÎ 1byte·Î Ã³¸®)
-    -- substrb : ¿µ¹®Àº 1byte, ÇÑ±ÛÀº 3byte (¿µ¹®Àº 1byte, ÇÏ´ÃÀº 3byte·Î Ã³¸®)
-    -- instrb : ¹®ÀÚÀÇ Æ¯Á¤ À§Ä¡ÀÇ ÀÎµ¦½º °ªÀ» ¹İÈ¯
-    -- lpad, rpad : ÀÔ·Â ¹ŞÀº ¹®ÀÚ¿­¿¡¼­ Æ¯¼ö¹®ÀÚ¸¦ Àû¿ë => lpad(¿ŞÂÊ), rpad(¿À¸¥ÂÊ)
-        -- => ex. lpad(´ë»ó, ¹®ÀÚ¿­ Å©±â ÁöÁ¤(byte. = ¹æ Å©±â¿Í °°Àº ÀÇ¹Ì, '°ø¹éÃ³¸®¿ë Æ¯¼ö¹®ÀÚ')
-    -- trim : °ø¹éÁ¦°Å, Æ¯Á¤ ¹®ÀÚµµ Á¦°Å
+-- ë¬¸ì ì¡°ì‘ í•¨ìˆ˜
+    -- concat : ë¬¸ìì™€ ë¬¸ìë¥¼ ì—°ê²°í•´ì„œ ì¶œë ¥
+    -- substr : ë¬¸ìë¥¼ íŠ¹ì • ìœ„ì¹˜ì—ì„œ ì˜ë¼ì˜¤ëŠ” í•¨ìˆ˜ (ì˜ë¬¸, í•œê¸€, ëª¨ë‘ 1byteë¡œ ì²˜ë¦¬)
+    -- substrb : ì˜ë¬¸ì€ 1byte, í•œê¸€ì€ 3byte (ì˜ë¬¸ì€ 1byte, í•˜ëŠ˜ì€ 3byteë¡œ ì²˜ë¦¬)
+    -- instrb : ë¬¸ìì˜ íŠ¹ì • ìœ„ì¹˜ì˜ ì¸ë±ìŠ¤ ê°’ì„ ë°˜í™˜
+    -- lpad, rpad : ì…ë ¥ ë°›ì€ ë¬¸ìì—´ì—ì„œ íŠ¹ìˆ˜ë¬¸ìë¥¼ ì ìš© => lpad(ì™¼ìª½), rpad(ì˜¤ë¥¸ìª½)
+        -- => ex. lpad(ëŒ€ìƒ, ë¬¸ìì—´ í¬ê¸° ì§€ì •(byte. = ë°© í¬ê¸°ì™€ ê°™ì€ ì˜ë¯¸, 'ê³µë°±ì²˜ë¦¬ìš© íŠ¹ìˆ˜ë¬¸ì')
+    -- trim : ê³µë°±ì œê±°, íŠ¹ì • ë¬¸ìë„ ì œê±°
 
--- concat : ¹®ÀÚ¿Í ¹®ÀÚ¸¦ ¿¬°á    
+-- concat : ë¬¸ìì™€ ë¬¸ìë¥¼ ì—°ê²°    
 select 'Oracle', 'mania', concat('Oracle', 'mania') from dual;
 
-select concat(first_name, last_name) from employees;    -- first_name, last_name ÄÃ·³ÀÌ º´ÇÕµÇ¾î Ãâ·Â
-select concat(first_name, ' ' || last_name) from employees;    -- ' ' || : °ø¹é »ğÀÔÇÏ¿© Ãâ·Â
+select concat(first_name, last_name) from employees;    -- first_name, last_name ì»¬ëŸ¼ì´ ë³‘í•©ë˜ì–´ ì¶œë ¥
+select concat(first_name, ' ' || last_name) from employees;    -- ' ' || : ê³µë°± ì‚½ì…í•˜ì—¬ ì¶œë ¥
 
-    -- || : pipe. ¾ÕµÚ ¿¬°á ±â´É
-select 'ÀÌ¸§Àº : ' || concat(first_name, ' ' || last_name) || ' ÀÌ°í, Á÷¹«´Â : ' || job_id || ' ÀÔ´Ï´Ù.'
-as ÄÃ·³¿¬°á from employees;
+    -- || : pipe. ì•ë’¤ ì—°ê²° ê¸°ëŠ¥
+select 'ì´ë¦„ì€ : ' || concat(first_name, ' ' || last_name) || ' ì´ê³ , ì§ë¬´ëŠ” : ' || job_id || ' ì…ë‹ˆë‹¤.'
+as ì»¬ëŸ¼ì—°ê²° from employees;
 
-select 'ÀÌ¸§Àº : ' || concat(first_name, ' ' || last_name) || ' ÀÌ°í, Á÷¼Ó»ó°ü »ç¹øÀº : ' || manager_ID || ' ÀÔ´Ï´Ù.' 
-as Á÷¼Ó»ó°üÃâ·Â from employees;
+select 'ì´ë¦„ì€ : ' || concat(first_name, ' ' || last_name) || ' ì´ê³ , ì§ì†ìƒê´€ ì‚¬ë²ˆì€ : ' || manager_ID || ' ì…ë‹ˆë‹¤.' 
+as ì§ì†ìƒê´€ì¶œë ¥ from employees;
 
--- substr (substr ´ë»ó, ½ÃÀÛÀ§Ä¡, ÃßÃâ°³¼ö) : Æ¯Á¤ À§Ä¡¿¡¼­ ¹®ÀÚ¸¦ Àß¶ó¿È
-select 'Oracle mania', substr('Oracle mania', 4, 3), substr('¿À¶óÅ¬ ¸Å´Ï¾Æ', 2, 3) from dual;
+-- substr (substr ëŒ€ìƒ, ì‹œì‘ìœ„ì¹˜, ì¶”ì¶œê°œìˆ˜) : íŠ¹ì • ìœ„ì¹˜ì—ì„œ ë¬¸ìë¥¼ ì˜ë¼ì˜´
+select 'Oracle mania', substr('Oracle mania', 4, 3), substr('ì˜¤ë¼í´ ë§¤ë‹ˆì•„', 2, 3) from dual;
 
 select 'Oracle mania', substr('Oracle mania', -4, 3),
-substr('¿À¶óÅ¬ ¸Å´Ï¾Æ', -6, 4) from dual;     -- ½ÃÀÛÀ§Ä¡°¡ - ÀÏ °æ¿ì ¿À¸¥ÂÊ ³¡ºÎÅÍ Ã£±â ½ÃÀÛ
+substr('ì˜¤ë¼í´ ë§¤ë‹ˆì•„', -6, 4) from dual;     -- ì‹œì‘ìœ„ì¹˜ê°€ - ì¼ ê²½ìš° ì˜¤ë¥¸ìª½ ëë¶€í„° ì°¾ê¸° ì‹œì‘
 
 select first_name, substr(first_name, 2, 3), substr(first_name, -5, 4) from employees;
 
-select substrb('Oracle mania', 3, 3), substrb('¿À¶óÅ¬ ¸Å´Ï¾Æ', 4, 6) from employees;  -- ÇÑ±ÛÀº 3byte¾¿ Ã³¸®ÇÏ¿© '¶óÅ¬'¸¸ Ãâ·Â 
+select substrb('Oracle mania', 3, 3), substrb('ì˜¤ë¼í´ ë§¤ë‹ˆì•„', 4, 6) from employees;  -- í•œê¸€ì€ 3byteì”© ì²˜ë¦¬í•˜ì—¬ 'ë¼í´'ë§Œ ì¶œë ¥ 
 
-    -- ÀÌ¸§ÀÌ nÀ¸·Î ³¡³ª´Â »ç¿øµé Ãâ·ÂÇÏ±â (substr ÇÔ¼ö¸¦ »ç¿ëÇØ¼­ »ç¿ë)
+    -- ì´ë¦„ì´ nìœ¼ë¡œ ëë‚˜ëŠ” ì‚¬ì›ë“¤ ì¶œë ¥í•˜ê¸° (substr í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ì„œ ì‚¬ìš©)
 select concat(first_name, ' ' || last_name) from employees where substr(last_name, -1, 1) = 'n';
 select concat(first_name, ' ' || last_name) from employees where last_name like '%n';
 
-    -- 08³âµµ ÀÔ»çÇÑ »ç¿øµé Ãâ·ÂÇÏ±â (substr ÇÔ¼ö¸¦ »ç¿ëÇØ¼­ »ç¿ë)
+    -- 08ë…„ë„ ì…ì‚¬í•œ ì‚¬ì›ë“¤ ì¶œë ¥í•˜ê¸° (substr í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ì„œ ì‚¬ìš©)
 select concat(first_name, ' ' || last_name), hire_date from employees where substr(hire_date, 1, 2) = 08;
 select concat(first_name, ' ' || last_name), hire_date from employees where hire_date like '08%';
 
--- instr (´ë»ó, Ã£À» ±ÛÀÚ, ½ÃÀÛ À§Ä¡, ¸î¹øÂ° ¹ß°ß) : ´ë»ó¿¡¼­ Ã£À» ±ÛÀÚÀÇ ÀÎµ¦½º°ªÀ» Ãâ·Â
-select 'Oracle mania', instr('Oracle mania', 'm') from dual;    -- ½ÃÀÛ À§Ä¡, ¸î¹øÂ° ¹ß°ßÀº »ı·«
-    -- 5¹øÂ°ºÎÅÍ Ã£±â ½ÃÀÛÇÏ¿© Ã¹¹øÂ° a´Â Áö³ªÄ¡°í µÎ¹øÂ°¿¡ ¹ß°ßµÇ´Â aÀÇ À§Ä¡¸¦ Ãâ·Â
+-- instr (ëŒ€ìƒ, ì°¾ì„ ê¸€ì, ì‹œì‘ ìœ„ì¹˜, ëª‡ë²ˆì§¸ ë°œê²¬) : ëŒ€ìƒì—ì„œ ì°¾ì„ ê¸€ìì˜ ì¸ë±ìŠ¤ê°’ì„ ì¶œë ¥
+select 'Oracle mania', instr('Oracle mania', 'm') from dual;    -- ì‹œì‘ ìœ„ì¹˜, ëª‡ë²ˆì§¸ ë°œê²¬ì€ ìƒëµ
+    -- 5ë²ˆì§¸ë¶€í„° ì°¾ê¸° ì‹œì‘í•˜ì—¬ ì²«ë²ˆì§¸ aëŠ” ì§€ë‚˜ì¹˜ê³  ë‘ë²ˆì§¸ì— ë°œê²¬ë˜ëŠ” aì˜ ìœ„ì¹˜ë¥¼ ì¶œë ¥
 select 'Oracle mania', instr('Oracle mania', 'a', 5, 2) from dual;
-    -- (¿À¸¥ÂÊ ³¡¿¡¼­ºÎÅÍ)5¹øÂ°ºÎÅÍ Ã£±â ½ÃÀÛÇÏ¿© Ã¹¹øÂ° a´Â Áö³ªÄ¡°í µÎ¹øÂ° ¹ß°ßµÇ´Â aÀÇ À§Ä¡¸¦ Ãâ·Â => µÎ¹øÂ° a°¡ ¾ø¾î¼­ 0 Ãâ·Â
+    -- (ì˜¤ë¥¸ìª½ ëì—ì„œë¶€í„°)5ë²ˆì§¸ë¶€í„° ì°¾ê¸° ì‹œì‘í•˜ì—¬ ì²«ë²ˆì§¸ aëŠ” ì§€ë‚˜ì¹˜ê³  ë‘ë²ˆì§¸ ë°œê²¬ë˜ëŠ” aì˜ ìœ„ì¹˜ë¥¼ ì¶œë ¥ => ë‘ë²ˆì§¸ aê°€ ì—†ì–´ì„œ 0 ì¶œë ¥
 select 'Oracle mania', instr('Oracle mania', 'a', -5, 2) from dual;
 
 select distinct instr((job_id), 'R', 1, 1) from employees where lower(job_id) = 'st_clerk';
 
--- lpad, rpad : Æ¯Á¤ ±æÀÌ¸¸Å­ ¹®ÀÚ¿­À» ÁöÁ¤ÇØ¼­ ¿ŞÂÊ, ¿À¸¥ÂÊ¿¡ °ø¹éÀ» Æ¯Á¤ ¹®ÀÚ·Î Ã³¸® => lpad(¿ŞÂÊ), rpad(¿À¸¥ÂÊ)
+-- lpad, rpad : íŠ¹ì • ê¸¸ì´ë§Œí¼ ë¬¸ìì—´ì„ ì§€ì •í•´ì„œ ì™¼ìª½, ì˜¤ë¥¸ìª½ì— ê³µë°±ì„ íŠ¹ì • ë¬¸ìë¡œ ì²˜ë¦¬ => lpad(ì™¼ìª½), rpad(ì˜¤ë¥¸ìª½)
 select rpad(salary, 10, '*') from employees;
-select rpad(salary, 10) from employees;     -- Æ¯¼ö¹®ÀÚ ¼³Á¤ ¾ÈÇÏ¸é °ø¹éÀ¸·Î Ãâ·Â
+select rpad(salary, 10) from employees;     -- íŠ¹ìˆ˜ë¬¸ì ì„¤ì • ì•ˆí•˜ë©´ ê³µë°±ìœ¼ë¡œ ì¶œë ¥
 select lpad(1234, 10, '#') from dual;
 
--- TRIM : °ø¹éÁ¦°Å, Æ¯Á¤ ¹®ÀÚµµ Á¦°Å
-    -- LTRIM : ¿ŞÂÊÀÇ °ø¹éÀ» Á¦°Å
-    -- RTRIM : ¿À¸¥ÂÊÀÇ °ø¹éÀ» Á¦°Å
-    -- TRIM : ÁÂ¿ì °ø¹éÀ» Á¦°Å
-select ltrim('   Oracle mania   ') as ¿ŞÂÊ°ø¹éÁ¦°Å,
-rtrim('   Oracle mania   ') as ¿À¸¥ÂÊ°ø¹éÁ¦°Å,
-trim('   Oracle mania   ') as ÁÂ¿ì°ø¹éÁ¦°Å
+-- TRIM : ê³µë°±ì œê±°, íŠ¹ì • ë¬¸ìë„ ì œê±°
+    -- LTRIM : ì™¼ìª½ì˜ ê³µë°±ì„ ì œê±°
+    -- RTRIM : ì˜¤ë¥¸ìª½ì˜ ê³µë°±ì„ ì œê±°
+    -- TRIM : ì¢Œìš° ê³µë°±ì„ ì œê±°
+select ltrim('   Oracle mania   ') as ì™¼ìª½ê³µë°±ì œê±°,
+rtrim('   Oracle mania   ') as ì˜¤ë¥¸ìª½ê³µë°±ì œê±°,
+trim('   Oracle mania   ') as ì¢Œìš°ê³µë°±ì œê±°
 from employees;

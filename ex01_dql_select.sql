@@ -127,6 +127,7 @@ select first_name, last_name, job_id, hire_date from employees where hire_date b
     -- commission_pct이 0.25, 0.3, 0.35인 사원의 이름, 직책, 입사일을 출력
 select first_name, last_name, hire_date from employees where commission_pct in(0.25, 0.3, 0.35);
 
+-- whild card
 -- like : 컬럼 내의 특정한 문자열을 검색 => 글 검색 기능을 사용할 때 사용
     -- % : 뒤에 어떤 글자가 와도 상관없음
     -- _ : 한글자가 어떤 값이 와도 상관없음
@@ -165,3 +166,10 @@ select department_id, last_name from employees order by department_id desc, last
 -- where과 order by 절이 같이 사용될 때
 select * from employees where commission_pct is null order by first_name asc;
 select * from employees where commission_pct is null order by first_name desc;
+
+-- 급여가 가장 낮은 사원 3명의 이름과 월급 출력
+	-- rownum : 행 번호 할당
+	-- 쿼리 구문의 순서가 SELECT -> FROM -> WHERE -> ORDER BY 순으로 실행되어 정렬이 가장 늦기 때문에 제대로 급여가 낮은 순으로 출력되지 않음
+SELECT last_name, SALARY FROM EMPLOYEES WHERE rownum < 4 ORDER BY SALARY ASC;
+	-- 정답 => from 절 안에서 구문을 작성하여 구문 실행 순서를 임의로 바꾸는 효과를 사용할 수 있음
+SELECT last_name, salary FROM (SELECT last_name, salary FROM EMPLOYEES ORDER BY salary asc) WHERE rownum < 4;
