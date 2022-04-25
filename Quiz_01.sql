@@ -23,7 +23,7 @@ GROUP BY dno
 HAVING SUM(salary) >= 3000;
 
 -- 문항 7. 부서별 사원수와 평균 급여를 출력하되, 평균급여는 소숫점 2자리 까지만 출력 하시오. 출력 컬럼은 부서번호, 부서별사원수, 평균급여 로 출력 하되 별칭이름도 "부서번호" , "부서별사원수", "평균급여"로 출력 하시오.
-SELECT dno AS 부서번, count(*) AS 부서별사원수, ROUND(AVG(salary), 2) AS 평균급여
+SELECT dno AS 부서번호, COUNT(*) AS 부서별사원수, ROUND(AVG(salary), 2) AS 평균급여
 FROM EMPLOYEE
 GROUP BY dno;
 

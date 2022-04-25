@@ -15,12 +15,18 @@ SELECT ename, job, salary
 FROM EMPLOYEE
 WHERE salary IN(SELECT MIN(salary) FROM EMPLOYEE GROUP BY JOB);
 
--- 4. 직급별로 평균 급여를 구하고, 가장 작은 직급 평균에서 가장 작은 사원의 직급과 급여를 표시하시오.
+-- 4. 평균 급여가 가장 작은 부서 내에서 급여가 가장 작은 사원의 직급과 급여를 표시하시오.
 SELECT ename, job, salary
 FROM EMPLOYEE
 WHERE job = (SELECT job FROM EMPLOYEE GROUP BY job HAVING AVG(salary) <= ALL(SELECT AVG(salary) FROM EMPLOYEE GROUP BY job))
 AND salary = (SELECT MIN(salary) FROM EMPLOYEE
 WHERE job = (SELECT job FROM EMPLOYEE GROUP BY job HAVING AVG(salary) <= ALL(SELECT AVG(salary) FROM EMPLOYEE GROUP BY job)));
+
+SELECT ename, job, salary
+FROM EMPLOYEE
+WHERE salary = (SELECT MIN(salary) FROM EMPLOYEE
+	GROUP BY job HAVING AVG(salary) = (SELECT MIN(AVG(salary))
+	FROM EMPLOYEE GROUP BY JOB));
 
 -- 5. 각 부서의 최소 급여를 받는 사원의 이름, 급여, 부서번호를 표시하시오.
 SELECT ename, salary, dno
@@ -34,20 +40,14 @@ WHERE SALARY < ALL(SELECT salary FROM EMPLOYEE WHERE job = 'ANALYST')
 AND job != 'ANALYST';
 
 -- 7. 부하직원이 없는 사원의 이름을 표시 하시오.
-SELECT ename, job
+SELECT ename, JOB
 FROM EMPLOYEE
-WHERE ename
-IN (SELECT m.ename
-FROM EMPLOYEE e RIGHT OUTER JOIN EMPLOYEE m
-ON e.MANAGER = m.ENO WHERE e.ENAME IS NULL);
+WHERE eno NOT IN (SELECT manager FROM EMPLOYEE WHERE manager IS NOT NULL);
 
 -- 8. 부하직원이 있는 사원의 이름을 표시 하시오.
-SELECT ename, job
+SELECT ename, JOB
 FROM EMPLOYEE
-WHERE ename
-IN (SELECT m.ename
-FROM EMPLOYEE e RIGHT OUTER JOIN EMPLOYEE m
-ON e.MANAGER = m.ENO WHERE e.ENAME IS NOT NULL); 
+WHERE eno IN (SELECT manager FROM EMPLOYEE WHERE manager IS NOT NULL);
 
 -- 9. BLAKE와 동일한 부서에 속한 사원의 이름과 입사일을 표시하는 질의를 작성하시오(단, BLAKE 는 제외)
 SELECT ename, hiredate
@@ -71,6 +71,11 @@ SELECT e.ENAME, e.DNO, e.JOB
 FROM EMPLOYEE e, DEPARTMENT d
 WHERE e.DNO = d.DNO
 AND e.DNO = (SELECT dno FROM DEPARTMENT WHERE loc = 'DALLAS');
+
+SELECT ename, e.dno, job, loc
+FROM EMPLOYEE e, DEPARTMENT d
+WHERE e.DNO = d.DNO
+AND e.DNO IN (SELECT dno FROM DEPARTMENT WHERE loc = 'DALLAS');
 
 -- 13. KING에게 보고하는 사원의 이름과 급여를 표시하시오.
 SELECT e.ENAME, e.SALARY
