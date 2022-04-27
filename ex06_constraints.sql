@@ -49,6 +49,11 @@ ALTER TABLE DEPT20 ADD (birth DATE);
 ALTER TABLE DEPT20 ADD (email varchar2(100));
 ALTER TABLE DEPT20 ADD (address varchar2(200));
 
+	-- 기존 테이블에 제약조건 추가
+ALTER TABLE TB_ZIPCODE
+ADD CONSTRAINT PK_tb_zipcode_zipcode
+PRIMARY KEY(zipcode);
+
 	-- 컬럼의 자료형을 수정
 ALTER TABLE DEPT20 MODIFY dname varchar2(100);
 ALTER TABLE DEPT20 MODIFY dno number(4);
@@ -57,9 +62,14 @@ ALTER TABLE DEPT20 MODIFY address Nvarchar2(200);
 	-- 특정 컬럼 삭제 : 데이터 규모에 따라 부하가 많이 걸릴 수 있음
 ALTER TABLE DEPT20 DROP COLUMN birth;
 ALTER TABLE DEPT20 DROP COLUMN email;
+	-- 특정 컬럼의 제약조건 삭제
+ALTER TABLE TB_ZIPCODE DROP CONSTRAINT PK_tb_zipcode_zipcode;
 	-- SET UNUSED : 특정 컬럼을 사용 중지 (컬럼을 삭제시에 부하가 많이 발생되기 떄문에 우선 중지 후 업무시간 외에 컬럼을 삭제하는 편)
 ALTER TABLE DEPT20 SET unused (address);	-- 사용 중지
 ALTER TABLE DEPT20 DROP unused COLUMN;		-- 사용 중지된 컬럼을 삭제
+	-- SET DISABLE : 특정 제약조건 사용 중지 (대량의 데이터를 INSERT할 때 제약조건이 있으면 과부하가 발생되기 쉽기 때문에 제약조건을 중지가 필요할 때 있음)
+ALTER TABLE DEPT20 disable CONSTRAINT PK_DEPT20;
+ALTER TABLE DEPT20 enable novalidate CONSTRAINT PK_DEPT20;		-- 다시 활성화
 
 -- 컬럼 이름 변경
 ALTER TABLE DEPT20 RENAME COLUMN loc TO locations;
@@ -93,11 +103,11 @@ CREATE TABLE emp10 AS SELECT * FROM EMPLOYEE;
 CREATE TABLE emp20 AS SELECT * FROM EMPLOYEE;
 CREATE TABLE emp30 AS SELECT * FROM EMPLOYEE;
 
--- emp10 : delete를 사용해서 삭제
+-- emp10 : delete를 사용해서 삭제 (상대적으로 느린 삭제)
 DELETE emp10;
 COMMIT;
 SELECT * FROM EMP10;
--- emp20 : truncate를 사용해서 삭제
+-- emp20 : truncate를 사용해서 삭제 (기존 레코드의 데이터만 삭제 : 빠른 삭제)
 TRUNCATE TABLE EMP20;
 SELECT * FROM EMP20;
 -- emp30 : drop를 사용해서 삭제
@@ -305,3 +315,20 @@ INSERT INTO ORDERS10
 	VALUES (1, 'A1234', 'M1 MacBook', 2500000, DEFAULT, 10);
 
 SELECT * FROM ORDERS10;
+
+/*
+ * Foreign Key로 참조되는 테이블 삭제
+ * 	1. 자식 테이블을 먼저 삭제 후 부모 테이블 삭제 => drop table 사용
+ * 	2. Foreign Key 제약 조건을 모두 제거 후 테이블 삭제 => drop constraint 사용
+ * 	3. cascade constraints 옵션으로 테이블을 강제 삭제
+ */
+
+-- cascade constraint 옵션을 사용해서 삭제 => Foreign Key 제약 조건을 먼저 제거 후 삭제
+	-- => cascade : 강제
+DROP TABLE dept10 CASCADE CONSTRAINTS;
+
+-- cascade를 사용하여 제약조건 강제 비활성화 (부모테이블의 제약조건을 강제 비활성화하면 자식 테이블의 참조 제약조건도 강제 중지)
+	-- Bulk Insert (대량의 Insert) => Bulk Insert가 필요한 이유는 대량의 데이터를 넣을 경우 하나의 데이터를 넣을 때마다 Check 되기 때문에 속도가 느림. 때문에 제약조건 비활성 후 데이터를 넣고 다시 활성화
+ALTER TABLE TB_ZIPCODE disable CONSTRAINT PK_tb_zipcode_zipcode CASCADE;
+
+-- 트랜잭션 발생 : DML(insert, update, delete) => commit은 DML문에서만 실행해주면 됨

@@ -1,5 +1,7 @@
 -- << Quiz >> --
 
+-- 테이블 생성시(Foreign Key) : 부모테이블 (FK 참조 테이블)을 먼저 생성하여 Primary Key or Unique 조건을 설정 후 자식 테이블 생성
+	-- => 자식 테이블을 생성할 때 FK를 넣지 않고 부모테이블 생성하여 Primary Key or Unique 조건을 설정 후 Alter Table을 사용하여 나중에 FK를 설정해도 됨
 CREATE TABLE tb_zipcode (
 	zipcode varchar2(7) NOT NULL CONSTRAINT PK_tb_zipcode_zipcode  PRIMARY KEY,
 	sido varchar2(30) NULL,
@@ -8,25 +10,38 @@ CREATE TABLE tb_zipcode (
 	bungi varchar2(30) NULL
 	);
 
+-- 테이블 컬럼명 수정
 ALTER TABLE TB_ZIPCODE RENAME COLUMN gugum TO gugun;
 ALTER TABLE TB_ZIPCODE RENAME COLUMN bungi TO bunji;
-
+-- 테이블 컬럼 추가
 ALTER TABLE TB_ZIPCODE ADD (zip_seq varchar2(300));
+-- 테이블 컬럼 자료형 수정
 ALTER TABLE TB_ZIPCODE MODIFY dong varchar2(300);
 
+-- 테이블 제약조건 확인
 SELECT * FROM USER_CONSTRAINTS WHERE TABLE_NAME = 'tb_zipcode';
+
+-- 제약조건 삭제시 주의사항 : members 테이블의 zipcode 컬럼이 tb_zipcode의 zipcode 컬럼을 참조하고 있음
+	-- => 자식 테이블의 Foreign Key를 삭제 후 부모 테이블의 Primary key를 삭제 가능
 ALTER TABLE TB_ZIPCODE DROP CONSTRAINT PK_tb_zipcode_zipcode;
 
-INSERT INTO TB_ZIPCODE
-	VALUES (12345, '서울특별시', '강남구', '개포동', '123번지');
+-- 제약조건 비활성화하기 => Bulk Insert (대량의 Insert)
+	-- cascade를 사용하여 강제 비활성화 (부모테이블의 제약조건을 강제 비활성화하면 자식 테이블의 참조 제약조건도 강제 중지)
+ALTER TABLE TB_ZIPCODE
+disable CONSTRAINT PK_tb_zipcode_zipcode CASCADE;
+-- ALTER TABLE TB_ZIPCODE disable CONSTRAINT PK_tb_zipcode_zipcode;	-- 오류발생. members 테이블에서 tb_zipcode의 zipcode 컬럼을 참조하고 있어 중지 불가능
 
-INSERT INTO TB_ZIPCODE
-	VALUES (23421, '서울특별시', '강서구', '화곡동', '253번지');
-
-INSERT INTO TB_ZIPCODE
-	VALUES (54812, '서울특별시', '강동구', '강일동', '754번지');
+-- 기존 테이블에 제약조건 추가 (Primary Key or Unique 조건을 추가하려면 데이터들의 중복이 없어야 추가 가능)
+ALTER TABLE TB_ZIPCODE
+ADD CONSTRAINT PK_tb_zipcode_zipcode
+PRIMARY KEY(zipcode);
 
 SELECT * FROM tb_zipcode;
+-- zip_seq 컬럼을 숫자순서로 오름차순으로 정렬하기
+	-- => zip_seq의 자료형이 varchar2이기 때문에 문자열로 정렬됨. to_number을 사용하여 정렬하면 숫자순으로 정렬됨
+SELECT * FROM TB_ZIPCODE ORDER BY TO_NUMBER(ZIP_SEQ);
+
+-----------------------------------------------------
 
 CREATE TABLE members (
 	id varchar2(20) NOT NULL CONSTRAINT PK_member_id PRIMARY KEY,
@@ -39,19 +54,17 @@ CREATE TABLE members (
 	indate DATE DEFAULT sysdate
 	);
 
-ALTER TABLE TB_ZIPCODE DROP CONSTRAINT PK_tb_zipcode_zipcode;
-
-INSERT INTO MEMBERS
-	VALUES (10, 'A1234', '홍길동', 12345, '강남구 개포동', '010-1111-1111', DEFAULT);
-
-INSERT INTO MEMBERS
-	VALUES (20, 'B1234', '이순신', 23421, '강서구 화곡동', '010-2222-2222', DEFAULT);
-
-INSERT INTO MEMBERS
-	VALUES (30, 'C1234', '김유신', 54812, '강동구 강일동', '010-3333-3333', DEFAULT);
-
+-- 테이블 참조 제약조건 삭제
+ALTER TABLE MEMBERS DROP CONSTRAINT FK_members_id_tb_zipcode;
 SELECT * FROM members;
-	
+
+-- 테이블 제약조건 추가
+ALTER TABLE members
+ADD CONSTRAINT FK_members_id_tb_zipcode
+FOREIGN KEY(zipcode) REFERENCES tb_zipcode(zipcode);
+
+-----------------------------------------------------	
+
 CREATE TABLE products (
 	product_code varchar2(20) NOT NULL CONSTRAINT PK_products_product_code PRIMARY KEY,
 	product_name varchar2(100) NULL,
@@ -67,17 +80,9 @@ CREATE TABLE products (
 	indate DATE NULL
 	);
 
-INSERT INTO PRODUCTS
-	VALUES ('PD1234', '연필', 'A', 300, 1000, '연필입니다.', '연필이미지', 10, 20, 100, 'O', sysdate);
-
-INSERT INTO PRODUCTS
-	VALUES ('PD5678', '지우개', 'B', 100, 3000, '지우개입니다.', '지우개이미지', 10, 20, 100, 'O', sysdate);
-
-INSERT INTO PRODUCTS
-	VALUES ('PD9876', '필통', 'C', 1000, 5000, '필통입니다.', '필통이미지', 10, 20, 100, 'O', sysdate);
-	
 SELECT * FROM PRODUCTS;
 
+-----------------------------------------------------
 
 CREATE TABLE orders (
 	o_seq number(10) NOT NULL CONSTRAINT PK_orders_o_seq PRIMARY KEY,
@@ -90,16 +95,7 @@ CREATE TABLE orders (
 	resutl char(1) NULL,
 	indate DATE NULL
 	);
-	
-INSERT INTO ORDERS
-	VALUES (1111111, 'PD1234', 10, 20, 1, 'O', sysdate);
-	
-INSERT INTO ORDERS
-	VALUES (2222222, 'PD5678', 10, 20, 1, 'O', sysdate);
-	
-INSERT INTO ORDERS
-	VALUES (3333333, 'PD9876', 10, 20, 1, 'O', sysdate);
-	
+
 SELECT * FROM ORDERS;
 
 COMMIT;

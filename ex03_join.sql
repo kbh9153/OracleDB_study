@@ -176,9 +176,9 @@ FROM EMPLOYEE e JOIN EMPLOYEE m
 ON e.MANAGER = m.ENO(+)		-- (+) : m.ename의 공통적이지 않는 내용도 출력
 
 	-- ANSI 호환을 사용해서 출력
-		-- Left Outer JOIN : 왼쪽 컬럼(기준)에 있어 우측 컬럼에 공통적인 부분이 없어도 우측 컬럼은 무조건 모두 출력
-		-- Right Outer JOIN : 우측 컬럼(기준)에 있어 좌측 컬럼에 공통적인 부분이 없어도 좌측 컬럼은 무조건 모두 출력
-		-- FULL Outer JOIN : 양쪽 컬럼에 있어 서로 공통적인 부분이 없어도 양쪽 컬럼 무조건 모두 출력
+		-- (A) Left Outer JOIN (B) : (A) 컬럼 좌측의 컬럼인 (B)에 공통적인 부분이 없어도 무조건 모두 출력
+		-- (A) Right Outer JOIN (B) : (A) 컬럼 우측의 컬럼인 (B)에 공통적인 부분이 없어도 무조건 모두 출력
+		-- (A) FULL Outer JOIN (B) : (A), (B) 양쪽 컬럼에 있어 서로 공통적인 부분이 없어도 양쪽 컬럼 무조건 모두 출력
 SELECT e.ENAME, m.ENAME 
 FROM EMPLOYEE e LEFT OUTER JOIN EMPLOYEE m
 ON e.MANAGER = m.ENO
