@@ -23,11 +23,11 @@ ADD CONSTRAINT my_emp_dept_fk FOREIGN KEY(dno) REFERENCES dept_sample(dno);
 
 -- 4. 사원테이블의 커밋션 컬럼에 0보다 큰 값만을 입력할 수 있도록 제약 조건을 지정하시오. [주의 : 위 복사한 테이블을 사용하시오]
 UPDATE EMP_SAMPLE
-SET commission = 10
+SET commission = 0
 WHERE COMMISSION IS NULL;
 
 ALTER TABLE EMP_SAMPLE
-ADD CONSTRAINT CK_emp_sample_commission CHECK (commission > 0);
+ADD CONSTRAINT CK_emp_sample_commission CHECK (commission >= 0);
 
 -- 5. 사원테이블의 웝급 컬럼에 기본 값으로 1000 을 입력할 수 있도록 제약 조건을 지정하시오. [주의 : 위 복사한 테이블을 사용하시오]
 ALTER TABLE EMP_SAMPLE 
@@ -49,6 +49,11 @@ DROP CONSTRAINT MY_EMP_DEPT_FK;
 
 ALTER TABLE EMP_SAMPLE
 DROP CONSTRAINT MY_EMP_PK;
+
+/*
+ALTER TABLE EMP_SAMPLE
+DROP CONSTRAINT MY_EMP_PK CASCADE;
+*/
 
 ALTER TABLE EMP_SAMPLE
 DROP CONSTRAINT UK_EMP_SAMPLE_ENAME;
