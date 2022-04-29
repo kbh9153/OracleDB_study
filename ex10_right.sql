@@ -53,8 +53,17 @@ SELECT USERNAME, DEFAULT_TABLESPACE AS DataFile, TEMPORARY_TABLESPACE AS LogFile
 
 -- 계정에게 테이블 스페이스 (SYSTEM => USERS) 변경
 ALTER USER usertest01
-DEFAULT tablespace users
-TEMPORARY tablespace temp;
+DEFAULT tablespace users		-- DataFile 저장 : 객체(테이블, 뷰, 트리거, 함수, 저장 프로시저, 시퀀스, 인덱스)가 저장되는 공간
+TEMPORARY tablespace temp;		-- LOG를 저장 : DML(Insert, Update, Delete)를 실행 시 트랜잭션 시작 기록이 로그에 저장 
+								-- LOG를 호칭할 때 Transaction Log라고 칭함
+								-- LOG는 시스템에 문제 발생시 백업시점이 아니라 오류발생 시점까지 복원하기 위해 사용
+
+-- 테이블 스페이스 : 객체와 Log를 저장하는 물리적인 파일
+	-- DataFile : 객체를 저장
+	-- Log : Transaction Log를 저장
+    
+    -- DataFile과 Log 파일은 물리적으로 다른 하드공간에 저장해야 성능을 향상시킬 수 있음
+        -- => RAID된 공간에 저장하면 성능 향상 가능
 
 -- 계정에게 Users 테이블 스페이스를 사용할 수 있는 공간 할당
 ALTER USER usertest01
