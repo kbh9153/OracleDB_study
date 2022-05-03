@@ -296,3 +296,56 @@ begin
     close c2;
 end;
 /
+
+
+-- cursor for loop 문으로 커서를 사용하여 여러 레코드셋 출력하기
+    -- open, close를 생략 가능
+    -- 한 테이블의 전체 내용을 출력할 때 사용
+set serveroutput on
+declare
+    v_dept department%rowtype;
+    
+    cursor c1   -- 커서 선언
+    is
+    select * from department;
+begin
+    dbms_output.put_line('부서번호   부서명   지역명');
+    dbms_output.put_line('------------------------');
+    for v_dept in c1 loop
+        dbms_output.put_line(v_dept.dno || '   ' || v_dept.dname || '   ' || v_dept.loc);
+    end loop;
+end;
+/
+select * from employee;
+-- employee 테이블을 모든 내용을 출력하기
+set serveroutput on
+declare
+    v_emp employee%rowtype;
+    cursor c1
+    is
+    select * from employee order by eno desc;
+begin
+    dbms_output.put_line('사원번호   사원이름   직급   매니저   입사일   급여   상여금   부서번호');
+    for v_emp in c1 loop
+        dbms_output.put_line(v_emp.eno || '   ' || v_emp.ename || '   ' || v_emp.job || '   ' || v_emp.manager || '   ' || v_emp.hiredate || '   ' || v_emp.salary || '   ' || nvl(v_emp.commission, 0) || '   ' || v_emp.dno);
+    end loop;
+end;
+/
+
+-- employee 테이블의 사원번호, 사원명, 월급을 출력하되 월급이 2000 이상이고 부서가 20번인
+set serveroutput on
+declare
+    v_emp employee%rowtype;
+    cursor c1
+    is
+    select eno, ename, salary
+    from employee
+    where salary >= 2000
+    and dno in (20, 30);
+begin
+    dbms_output.put_line('사원번호   사원이름   급여');
+    for v_emp in c1 loop
+        dbms_output.put_line(v_emp.eno || '   ' || v_emp.ename || '   ' || v_emp.salary);
+    end loop;
+end;
+/
