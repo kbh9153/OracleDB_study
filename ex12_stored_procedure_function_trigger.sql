@@ -1,4 +1,4 @@
--- << Stored Procedure, Function, Trigger >> --
+-- << Stored Procedure, Function >> --
 
 /*
     저장 프로시져의 장점

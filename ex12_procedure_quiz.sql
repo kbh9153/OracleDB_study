@@ -1,7 +1,8 @@
 -- 1. 각 부서별로 최소급여, 최대급여, 평균급여를 출력하는 저장프로시져를 생성하시오. 
     -- [employee, department ] 테이블 이용
+set serveroutput on;
 create or replace procedure sp_salary_info
-is
+is  -- 변수 선언부, 커서 선언
     v_dno employee.dno%type;
     v_min_salary employee.salary%type;
     v_max_salary employee.salary%type;
@@ -9,11 +10,12 @@ is
 
     cursor c1
     is
-    select dno, min(salary), max(salary), round(avg(salary), 2) from employee
+    select dno, min(salary), max(salary), round(avg(salary), 2)
+    from employee
     group by dno;
 begin
     DBMS_OUTPUT.PUT_LINE('부서번호   최소급여   최대급여   평균급여');
-    open c1;
+    open c1;    -- 커서 시작
     loop
         fetch c1 into v_dno, v_min_salary, v_max_salary, v_avg_salary;
         exit when c1%notfound;
@@ -76,12 +78,15 @@ exec sp_salary_b(1000);
 
 -- 4. 인풋 매개변수 : emp_c10, dept_c10  두개를 입력 받아 각각 employee, department 테이블을 복사하는 저장프로시져를 생성하세요. 
     -- 저장프로시져명 : sp_copy_table
+    
+    -- PL/SQL 내부에서 익명 블록에서 테이블을 생성 : grant create table to public; < sys 계정으로 접속 >
+    -- 저장 프로시져 실행 후 revoke create table from public;
 create or replace procedure sp_copy_table (
-    v_emp_copy in varchar2, v_dept_copy in varchar2
+    v_emp_copy in varchar2, v_dept_copy in varchar2     -- 매개변수 입력시 주의 : ';' 끝에 세미콜론을 입력하면 안됨, 자료형의 크기를 지정하면 안됨
 )
 is
-    cursor1 INTEGER;
-    v_sql1 varchar2(100);
+    cursor1 INTEGER;    -- 커서 변수 선언
+    v_sql1 varchar2(100);   -- 테이블 생성 쿼리를 담을 변수
     v_sql2 varchar2(100);
 begin
     v_sql1 := 'CREATE TABLE ' || v_emp_copy || ' as select * from employee';
@@ -114,7 +119,14 @@ exec sp_dept_c10_insert(2, 'HR', 'SEOUL');
 -- 6. emp_c10 테이블에서 모든 컬럼의 값을 인풋 받아 인풋 받은 값을 insert하는 저장프로시져를 생성하시요. 
     -- 입력 값 : 8000  'SONG'    'PROGRAMMER'  7788  sysdate  4500  1000  50
 create or replace procedure sp_emp_c10_insert (
-    v_eno in number, v_ename in varchar2, v_job in varchar2, v_mamager in varchar2, v_hiredate in date, v_salary in number, v_commission in number, v_dno in number
+    v_eno in emp_c10.eno%type,
+    v_ename in emp_c10.ename%type,
+    v_job in emp_c10.job%type,
+    v_mamager in emp_c10.manager%type,
+    v_hiredate in emp_c10.hiredate%type,
+    v_salary in emp_c10.salary%type,
+    v_commission in emp_c10.commission%type,
+    v_dno in emp_c10.dno%type
 )
 is
 begin
@@ -128,7 +140,8 @@ exec sp_emp_c10_insert(2938, 'HYEON', 'MANAGER', null, sysdate, 5000, 200, 20);
     -- <부서번호와 부서명을 인풋받아 수정하도록 하시오.> 
     -- 입력값 : 50  PROGRAMMER 
 create or replace procedure sp_dept_c10_update (
-    v_dname in varchar2, v_dno in number
+    v_dname in varchar2,
+    v_dno in number
 )
 is
 begin

@@ -183,6 +183,4 @@ grant roletest3 to user_test10;
 
 select * from user_role_privs;
 
-select * from hr.dept_copy57;
-
- 
+select * from hr.dept_copy57; 
